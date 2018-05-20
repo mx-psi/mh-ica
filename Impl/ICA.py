@@ -10,6 +10,27 @@ from PosessEmpire import *
 from UniteSimilarEmpires import *
 from ImperialisticCompetition import *
 
+
+params = {
+  "ncountries": 200,
+  "nimperialists": 8,
+  "decades": 200,
+  "revolution_rate": 0.3,
+  "assimilation_coef": 2,
+  "assimilation_angle_coef": 0.5,
+  "zeta": 0.02,
+  "damp_ratio": 0.99,
+  "stop_if_just_one_empire": False,
+  "uniting_threshold": 0.02,
+  "zarib":1.05, # Zarib is used to prevent the weakest empire to have a probability of zero
+  "alpha": 0.1  # importance of the mean minimun compared to the global minimum. Must be << 1
+}
+
+problem_domain = {
+  "dim": 30,
+  "domain": (-100, 100)  # tuple including lower and upper bounds
+}
+
 def ICA(CostFunction, dim=30, ncountries=200, nimperialists=8, decades=2000,
         revolution_rate=0.3, assimilation_coef=2, assimilation_angle_coef=0.5,
         zeta=0.02, damp_ratio=0.99, stop_if_just_one_empire=False, uniting_threshold=0.02,
