@@ -1,14 +1,15 @@
 import numpy as np
 
-def PosessEmpire(imperialist, imperialist_fitness, colonies, colonies_fitness):
-    best_colony = np.argmin(colonies_fitness)
+def PosessEmpire(emp):
 
-    if (colonies_fitness[best_colony] < imperialist_fitness):
-        old_imperialist = imperialist
-        old_imperialist_fitness = imperialist_fitness
-        imperialist = colonies[best_colony]
-        imperialist_fitness = colonies_fitness[best_colony]
-        colonies[best_colony] = old_imperialist
-        colonies_fitness[best_colony] = old_imperialist_fitness
+    best_colony = np.argmin(emp.colonies_fitness)
 
-    return imperialist, imperialist_fitness, colonies, colonies_fitness
+    if emp.colonies_fitness[best_colony] < emp.imperialist_fitness:
+        old_imperialist = emp.imperialist
+        old_imperialist_fitness = emp.imperialist_fitness
+        emp.imperialist = emp.colonies[best_colony]
+        emp.imperialist_fitness = emp.colonies_fitness[best_colony]
+        emp.colonies[best_colony] = old_imperialist
+        emp.colonies_fitness[best_colony] = old_imperialist_fitness
+
+    return emp

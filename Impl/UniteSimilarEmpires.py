@@ -1,8 +1,9 @@
 import numpy as np
 
-def UniteSimilarEmpires(imperialists, imperialists_fitness, colonies, colonies_fitness, empires_total_cost, domain, uniting_threshold, zeta):
-    lower_bound, upper_bound = domain
-    dim = len(colonies[0][0])
+def UniteSimilarEmpires(imperialists, imperialists_fitness, colonies, colonies_fitness, empires_total_cost, problem_domain, uniting_threshold, zeta):
+    lower_bound = problem_domain["lower_bound"]
+    upper_bound = problem_domain["upper_bound"]
+    dim = problem_domain["dim"]
 
     # The threshold distance is the lower distance two imperialists can be separated by without merging
     threshold_distance = uniting_threshold * abs(upper_bound - lower_bound)

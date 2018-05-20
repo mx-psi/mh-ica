@@ -1,6 +1,18 @@
 import numpy as np
+from GenerateNewCountries import *
+from Empire import Empire
 
-def CreateInitialEmpires(countries, fitness, nimperialists, zeta):
+def CreateInitialEmpires(CostFunction, ncountries, nimperialists, zeta, problem_domain):
+
+    # Generation of the initial countries
+    countries = GenerateNewCountries(ncountries, problem_domain)
+    fitness = np.apply_along_axis(CostFunction, 1, countries)
+
+    # And now the countries get sorted by their fitness
+    order = np.argsort(fitness)
+    fitness = fitness[order]
+    countries = countries[order]
+    ######################
 
     num_colonies = np.shape(countries)[0] - nimperialists
 
@@ -29,7 +41,11 @@ def CreateInitialEmpires(countries, fitness, nimperialists, zeta):
     new_colonies_fitness = np.split(colonies_fitness, cumulative_colonies_per_imperialist)
     empires_total_cost = np.array([])
 
-    for i in range(0,nimperialists):
+    for i in range(nimperialists):
         empires_total_cost = np.append(empires_total_cost, imperialists_fitness[i] + zeta * np.mean(colonies_fitness[i]))
 
-    return imperialists, imperialists_fitness, new_colonies, new_colonies_fitness, empires_total_cost
+    empires = []
+    for i in range(nimperialists):
+      empires.append(Empire(imperialists[i], imperialists_fitness[i], colonies[i], colonies_fitness[i], empires_total_cost[i]))
+
+    return empires
