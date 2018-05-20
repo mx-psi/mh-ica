@@ -1,6 +1,7 @@
 # Imperialist Competitive Algorithm: A Socio Politically Inspired Optimization Strategy
 # Developed By: Esmaeil Atashpaz Gargari
 # Translated to Python By: Juanjo Sierra
+# Improved by: Pablo Baeyens
 
 from CreateInitialEmpires import *
 from AssimilateColonies import *
@@ -11,10 +12,8 @@ from ImperialisticCompetition import *
 from Empire import Empire
 
 def ICA(CostFunction, params, domain):
-  # Initial empires are defined
   empires = CreateInitialEmpires(CostFunction, params["ncountries"], params["nimperialists"], params["zeta"], domain)
 
-  # Main loop
   revolution_rate = params["initial_revolution_rate"]
   for decade in range(params["decades"]):
     revolution_rate = params["damp_ratio"]*revolution_rate
@@ -26,9 +25,7 @@ def ICA(CostFunction, params, domain):
       emp.empire_total_cost = emp.imperialist_fitness + params["zeta"] * np.mean(emp.colonies_fitness)
       empires[i] = emp
 
-    # The imperialistic competition takes place
     empires = ImperialisticCompetition(empires, domain)
-
     if len(empires) == 1 and params["stop_if_just_one_empire"]:
       break
 
