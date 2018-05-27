@@ -2,10 +2,10 @@ from ICA import *
 from cec2014 import cec2014
 
 params = {
-  "ncountries": 300,
-  "nimperialists": 12,
+  "ncountries": 80,
+  "nimperialists": 8,
   "decades": 2000,
-  "initial_revolution_rate": 0.5,
+  "initial_revolution_rate": 0.3,
   "assimilation_coef": 2,
   "assimilation_angle_coef": 0.5,
   "zeta": 0.02,

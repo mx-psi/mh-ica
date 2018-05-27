@@ -2,7 +2,7 @@ import numpy as np
 from Empire import Empire
 
 def ImperialisticCompetition(empires, domain):
-    if np.random.rand() > 0.11 or len(empires) <= 1:
+    if np.random.rand() < 0.11 or len(empires) <= 1:
         return empires
 
     empires_total_cost = np.empty(len(empires))
@@ -23,8 +23,6 @@ def ImperialisticCompetition(empires, domain):
     # Conquest
     winner.colonies = np.append(winner.colonies, weakest.colonies[selected_colony].reshape(1,domain["dim"]), axis=0)
     winner.colonies_fitness = np.append(winner.colonies_fitness, weakest.colonies_fitness[selected_colony])
-
-    # The colony is removed from its former empire
     weakest.colonies = np.delete(weakest.colonies, selected_colony, 0)
     weakest.colonies_fitness = np.delete(weakest.colonies_fitness, selected_colony)
 
