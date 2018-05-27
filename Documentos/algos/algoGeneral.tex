@@ -1,0 +1,19 @@
+\begin{algorithm}
+  \begin{algorithmic}
+    \REQUIRE Función de coste $f$, dominio $\mathrm{Dom}$
+    \ENSURE La mejor solución encontrada
+    \STATE imperios $\leftarrow$ CreaImperiosIniciales($f$, Dom)
+    \STATE $R_{\mathrm{Rev}} \leftarrow R_{\mathrm{Inicial}}$
+    \FOR{$i = 0$ hasta nDécadas}
+       \STATE $R_{\mathrm{Rev}} \leftarrow \alpha \cdot R_{\mathrm{Rev}}$
+       \FORALL{$e$ en imperios}
+          \STATE $e \leftarrow \mathrm{AsimilaColonias}(e, \mathrm{Dom}, f)$
+          \STATE $e \leftarrow \mathrm{RevoluciónColonias}(e, \mathrm{Dom}, R_{\mathrm{Rev}}, f)$
+          \STATE $e \leftarrow \mathrm{PoseeImperio}(e)$
+          \STATE $\mathrm{CosteTotal}(e) \leftarrow \mathrm{CosteImp}(e) + z \cdot \mathrm{CosteColonias}(e)$
+        \ENDFOR
+    \STATE imperios $\leftarrow$ CompeticiónImperialista(imperios, Dom)
+    \ENDFOR
+    \RETURN Imperialista($\min$(imperios))
+\end{algorithmic}
+\end{algorithm}
