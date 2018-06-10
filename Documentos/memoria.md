@@ -23,7 +23,7 @@ toc: true
 
 # Introducción
 
-Los problemas de optimización uniobjetivo en variables reales consisten en, dados $n \in \mathbb{N}$ y un *dominio* $\Omega \subseteq \mathbb{R}^n$ hallar un mínimo global de una función $F:\Omega \to \mathbb{R}$ llamada *función objetivo*. Una *solución* es un vector $x \in \mathbb{R}^n$ y su *calidad* es el valor $F(x)$.
+Los problemas de optimización uniobjetivo en variables reales consisten en, dados $n \in \mathbb{N}$ y un *dominio* $\Omega \subseteq \mathbb{R}^d$ hallar un mínimo global de una función $F:\Omega \to \mathbb{R}$ llamada *función objetivo*. Una *solución* es un vector $x \in \mathbb{R}^d$ y su *calidad* es el valor $F(x)$.
 
 Este problema no es en general tratable de forma exacta; una función objetivo arbitraria puede no tener buenas propiedades analíticas o ser altamente multimodal, lo que impide el uso de técnicas basadas en el análisis como el uso del gradiente descendiente. 
 En su lugar intentamos aplicar metaheurísticas que intentan resolver estos problemas de forma general utilizando heurísticas, con frecuencia inspiradas en la naturaleza o en otros fenómenos.
@@ -44,16 +44,38 @@ Abstrayendo esta interpretación podemos verlo como un algoritmo de optimizació
 
 Es un algoritmo que ha sido utilizado para diversas aplicaciones industriales [@HosseinisurveyImperialistCompetitive2014] y desde su publicación original se han propuesto varias mejoras o versiones alternativas del algoritmo que mejoran sus resultados [@AbdiGICAImperialistcompetitive2017][@LinInteractionEnhancedImperialist2012][@AbdechiriAdaptiveImperialistCompetitive2010][@LinImprovingImperialistCompetitive2013][@RamezaniSocialBasedAlgorithmSBA2013].
 
+\newpage
+
 ## Algoritmo original
 
-En esta sección describimos el algoritmo original tal y como aparece en la versión en MATLAB implementada por los autores [@implICA]. Esta versión introduce ya el concepto de revolución que no aparece en el paper original y subsana algunos errores así que he considerado que era una versión más adecuada para empezar a trabajar.
-
-El pseudocódigo del algoritmo es el siguiente:
+En esta sección describimos el algoritmo original tal y como aparece en la versión en MATLAB implementada por los autores [@implICA]. Esta versión arregla algunos errores del algoritmo original. El pseudocódigo del algoritmo es el siguiente:
 
 \input{algos/algoGeneral}
 
-donde $\alpha, z, R_\mathrm{Inicial}$ y nDécadas son parámetros ajustables.
-En primer lugar la función CreaImperiosIniciales construye de forma uniforme países y toma los mejores como imperialistas 
+donde $\alpha, z, R_\mathrm{Inicial}$ y nDécadas son parámetros ajustables. Las funciones del algoritmo hacen lo siguiente:
+
+**CreaImperiosIniciales** construye de forma uniforme países y toma los mejores como imperialistas:
+El número de imperialistas ($N_\mathrm{imp}$) y de países totales ($N$) se fijan como parámetros.
+Sea $c_i$ el coste del imperialista $i$-ésimo, $c_\mathrm{máx} = \max_{1 \leq j \leq N_\mathrm{imp}} c_j$.
+Cada imperialista se lleva un número de colonias $\mathrm{NC}_i$ en función de su poder $P_i$:
+\begin{equation*}
+  P_i = \begin{cases}
+  1,\!3 c_\mathrm{máx} - c_i & \text{si } c_\mathrm{máx} > 0 \\
+  0,\!7 c_\mathrm{máx} - c_i & \text{si } c_\mathrm{máx}\leq 0
+  \end{cases}, \quad
+\mathrm{NC}_i = \left[ \left|\frac{P_i}{\sum_1^{N_\mathrm{imp}} P_j}\right| (N - N_\mathrm{imp})\right]
+\end{equation*}
+Esta fórmula evita un problema en el algoritmo que hacía que el peor imperialista no tuviera ninguna colonia.
+
+**AsimilaColonias** *asimila* las colonias hacia su imperialista; para cada colonia $c$ con imperialista asociado $e$ toma $\delta \sim U([0,\beta]^d)$ un vector aleatorio donde $\beta$ es un parámetro y actualiza:
+$c \leftarrow c + \delta(e-c)$
+
+**PoseeImperio** coloca como imperialista a la mejor colonia si esta supera en calidad al imperialista.
+A continuación se actualiza el coste total del imperio en función del coste de las colonias.
+
+Finalmente **CompeticiónImperialista** toma la peor colonia del peor imperialista y se la da aleatoriamente a otro imperialista con selección por ruleta en función del coste normalizado $E_i$:
+$E_i = \max( \mathrm{CosteTotal}(e_j)) - \mathrm{CosteTotal}(e_i)$.
+
 
 ## Versiones alternativas
 
