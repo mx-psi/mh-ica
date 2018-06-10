@@ -9,9 +9,6 @@ def objetivo(i):
       f.ncall = 0
     else:
       f.ncall += 1
-
-    if not x.flags["C_CONTIGUOUS"]:
-      x = np.ascontiguousarray(x)
     return cec2014.cec14(x,i)
   return f
 
@@ -33,16 +30,22 @@ DIM = 30
 problem_domain = {
   "dim": DIM,
   "lower_bound": -100,
-  "upper_bound": 100,  # tuple including lower and upper bounds
-  "max_evals": 10000*DIM # 10000*dim
+  "upper_bound": 100,
+  "max_evals": 10000*DIM
 }
 
+algoritmo = ICABestLS
+
 if __name__ == "__main__":
+  print("Dimensión: {dim}".format(dim = DIM))
+  print("Algoritmo: {nombre}".format(nombre = algoritmo.nombre))
+
+
   print("F","Media","Desviación estándar", sep=", ")
   for i in range(1,21):
     a = []
     for _ in range(25):
-      best = ICA(objetivo(i), params, problem_domain)
+      best = algoritmo(objetivo(i), params, problem_domain)
       a.append(objetivo(i)(best) - 100*i)
     m = statistics.mean(a)
     s = statistics.stdev(a)
