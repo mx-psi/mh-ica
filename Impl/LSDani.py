@@ -3,22 +3,6 @@ import numpy as np
 ## Hecho por Daniel Molina.                                                   ##
 ## Github: @dmolina
 ################################################################################
-#class CMAES:
-#    '''
-#    This class implement the CMA-ES algorithm
-#    '''
-#    def __init__(self,fitness,maxeval,domain):
-#	'''
-#	Init the class.
-#
-#	fitness -- Fitness function to improve
-#	maxeval -- maximum evaluation number
-#	domain  -- domain search (array with [min,max] values)
-#	'''
-#	self.fitness = fitness
-#	self.maxeval = maxeval
-#	self.domain  = domain
-#
 
 class LocalSearch:
     '''

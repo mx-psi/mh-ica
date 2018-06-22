@@ -35,17 +35,16 @@ def CreateInitialEmpires(CostFunction, ncountries, nimperialists, zeta, problem_
     randperm = np.random.permutation(num_colonies)
     colonies = colonies[randperm]
     colonies_fitness = colonies_fitness[randperm]
-
     cumulative_colonies_per_imperialist = np.cumsum(colonies_per_imperialist).astype(int)
     new_colonies = np.split(colonies, cumulative_colonies_per_imperialist)[0:nimperialists]
     new_colonies_fitness = np.split(colonies_fitness, cumulative_colonies_per_imperialist)
     empires_total_cost = np.array([])
 
     for i in range(nimperialists):
-        empires_total_cost = np.append(empires_total_cost, imperialists_fitness[i] + zeta * np.mean(colonies_fitness[i]))
+        empires_total_cost = np.append(empires_total_cost, imperialists_fitness[i] + zeta * np.mean(new_colonies_fitness[i]))
 
     empires = []
     for i in range(nimperialists):
-      empires.append(Empire(imperialists[i], imperialists_fitness[i], colonies[i], colonies_fitness[i], empires_total_cost[i]))
+      empires.append(Empire(imperialists[i], imperialists_fitness[i], new_colonies[i], new_colonies_fitness[i], empires_total_cost[i]))
 
     return empires
